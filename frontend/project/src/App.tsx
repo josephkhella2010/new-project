@@ -5,8 +5,6 @@ function App() {
     <>
       <h1>ewfwefwfwfwe</h1>
       <h1>ewfwefwfwfwe</h1>
-      <h1>ewfwefwfwfwe</h1>
-      <h1>ewfwefwfwfwe</h1>
     </>
   );
 }
