@@ -5,7 +5,7 @@ services:
     build: ./backend
     container_name: backend
     ports:
-      - "5000:5000"
+      - "5200:5200"
     env_file:
       - ./backend/.env
     volumes:
