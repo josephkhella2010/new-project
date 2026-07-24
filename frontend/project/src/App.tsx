@@ -1,10 +1,10 @@
 import "./App.css";
+import RoutesPage from "./Pages/Routes/RoutesPage";
 
 function App() {
   return (
     <>
-      <h1>ewfwefwfwfwe</h1>
-      <h1>ewfwefwfwfwe</h1>
+      <RoutesPage />
     </>
   );
 }
