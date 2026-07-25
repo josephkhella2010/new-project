@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../../Mongoo/schemas/User.js";
+import UserTwo from "../../Mongoo/schemas/User.js";
 
 const router = express.Router();
 
@@ -70,8 +70,8 @@ router.post("/register-user", async (req, res) => {
       });
     }
 
-    const existUserUsername = await User.findOne({ username });
-    const existUserEmail = await User.findOne({ email });
+    const existUserUsername = await UserTwo.findOne({ username });
+    const existUserEmail = await UserTwo.findOne({ email });
 
     if (existUserUsername && existUserEmail) {
       return res.status(400).json({
@@ -94,7 +94,7 @@ router.post("/register-user", async (req, res) => {
       });
     }
 
-    const newUser = await User.create({
+    const newUser = await UserTwo.create({
       firstName,
       lastName,
       username,
@@ -104,7 +104,7 @@ router.post("/register-user", async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "User created successfully",
+      message: ["User created successfully"],
       user: newUser,
     });
   } catch (error) {

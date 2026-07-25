@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./Mongoo/config/db.js";
 import registerRouter from "./routes/users/registerUser.js";
+import getUsersRouter from "./routes/users/getUsers.js";
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ connectDB();
 
 // api
 app.use("/api", registerRouter);
+app.use("/api", getUsersRouter);
 
 //
 
