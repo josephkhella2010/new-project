@@ -1,5 +1,6 @@
 import express from "express";
 import UserTwo from "../../Mongoo/schemas/User.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -24,6 +25,8 @@ router.post("/register-user", async (req, res) => {
     const dateOfBirth = req.body.dateOfBirth;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const fieldsArr = [
       "firstName",
@@ -100,12 +103,13 @@ router.post("/register-user", async (req, res) => {
       username,
       email,
       dateOfBirth,
-      password,
+      password: hashedPassword,
     });
 
     return res.status(201).json({
       message: ["User created successfully"],
       user: newUser,
+      fields: [],
     });
   } catch (error) {
     return res.status(500).json({

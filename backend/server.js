@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./Mongoo/config/db.js";
 import registerRouter from "./routes/users/registerUser.js";
 import getUsersRouter from "./routes/users/getUsers.js";
+import loginRouter from "./routes/users/loginUser.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ connectDB();
 
 // api
 app.use("/api", registerRouter);
+app.use("/api", loginRouter);
 app.use("/api", getUsersRouter);
 
 //
@@ -26,4 +28,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running:`);
   console.log(`Local:   http://localhost:${PORT}`);
+  console.log("JWT SECRET:", process.env.JWT_SECRET);
 });
