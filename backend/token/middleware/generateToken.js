@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-
 const generateToken = (user) => {
   return jwt.sign(
     {
@@ -9,7 +8,7 @@ const generateToken = (user) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "1m",
     },
   );
 };
