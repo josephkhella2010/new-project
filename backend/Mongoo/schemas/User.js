@@ -33,6 +33,15 @@ const userSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    verificationCode: {
+      type: Number,
+      default: null,
+    },
+
+    codeExpire: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -5,7 +5,7 @@ import connectDB from "./Mongoo/config/db.js";
 import registerRouter from "./routes/users/registerUser.js";
 import getUsersRouter from "./routes/users/getUsers.js";
 import loginRouter from "./routes/users/loginUser.js";
-
+import verifyCodeRouter from "./routes/users/getVerificationCode.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -17,6 +17,7 @@ connectDB();
 app.use("/api", registerRouter);
 app.use("/api", loginRouter);
 app.use("/api", getUsersRouter);
+app.use("/api", verifyCodeRouter);
 
 //
 
