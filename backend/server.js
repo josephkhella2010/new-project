@@ -6,6 +6,9 @@ import registerRouter from "./routes/users/registerUser.js";
 import getUsersRouter from "./routes/users/getUsers.js";
 import loginRouter from "./routes/users/loginUser.js";
 import verifyCodeRouter from "./routes/users/getVerificationCode.js";
+import deleteUser from "./routes/users/DeleteUser.js";
+import updateUser from "./routes/users/updateUser.js";
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -18,8 +21,10 @@ app.use("/api", registerRouter);
 app.use("/api", loginRouter);
 app.use("/api", getUsersRouter);
 app.use("/api", verifyCodeRouter);
+app.use("/api", deleteUser);
+app.use("/api", updateUser);
 
-//
+////
 
 const PORT = process.env.PORT || 5200;
 app.get("/", (req, res) => {

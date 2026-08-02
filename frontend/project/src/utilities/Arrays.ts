@@ -1,4 +1,7 @@
-import type { LoginInputsType, RegisterInputsType } from "./Interfaces";
+import type {
+  LoginInputsType,
+  RegisterInputsType,
+} from "./Interfaces";
 
 export const registerInputs: RegisterInputsType[] = [
   { name: "firstName", type: "text", label: "First Name" },
@@ -29,3 +32,12 @@ export const loginInputs: LoginInputsType[] = [
       }
     : { ...inp, placeholder: `Please enter ${inp.label}` },
 );
+
+export const editInputs: RegisterInputsType[] = [
+  { name: "firstName", type: "text", label: "First Name" },
+  { name: "lastName", type: "text", label: "Last Name" },
+  { name: "username", type: "text", label: "Username" },
+  { name: "email", type: "text", label: "Email" },
+  { name: "dateOfBirth", type: "date", label: "Date of Birth" },
+  { name: "password", type: "password", label: "Password" },
+].map((inp) => ({ ...inp, placeholder: `Please enter ${inp.label}` }));
