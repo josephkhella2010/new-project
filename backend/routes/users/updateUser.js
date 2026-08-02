@@ -25,7 +25,6 @@ router.put("/update-user/:id", token, async (req, res) => {
     const email = formatName(req.body.email, true);
     const password = formatName(req.body.password, false);
     const dateOfBirth = req.body.dateOfBirth;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     req.body;
     if (!token) {
@@ -54,6 +53,11 @@ router.put("/update-user/:id", token, async (req, res) => {
       return res.status(404).json({
         message: ["User not found"],
       });
+    }
+    let hashedPassword = findUser.password;
+
+    if (req.body.password && req.body.password.trim() !== "") {
+      hashedPassword = await bcrypt.hash(req.body.password.trim(), saltRounds);
     }
 
     const updatedUser = await UserTwo.findByIdAndUpdate(
