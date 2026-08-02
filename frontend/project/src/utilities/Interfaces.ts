@@ -42,3 +42,13 @@ export interface UsersType {
   updatedAt?: string;
   __v?: number;
 }
+
+export interface UpdateInputsType {
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  dateOfBirth: string;
+  password: string;
+}
