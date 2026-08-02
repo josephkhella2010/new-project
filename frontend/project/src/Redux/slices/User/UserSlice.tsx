@@ -85,6 +85,28 @@ const UserSlice = createSlice({
         user.codeExpire = null;
       }
     },
+    deleteUser: (state, action: PayloadAction<{ userId: string }>) => {
+      state.users = state.users.filter(
+        (u) => String(u._id) !== String(action.payload.userId),
+      );
+    },
+    updateUser: (
+      state,
+      action: PayloadAction<{ userId: string; user: Partial<UsersType> }>,
+    ) => {
+      const { userId, user } = action.payload;
+      const userIndex = state.users.findIndex((u) => u._id === userId);
+      if (userIndex !== -1) {
+        const updatedUser = {
+          ...state.users[userIndex],
+          ...user,
+        };
+
+        state.users[userIndex] = updatedUser as UsersType;
+        state.user = updatedUser as UsersType;
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      }
+    },
   },
 });
 
@@ -95,6 +117,8 @@ export const {
   setLogOut,
   setVerificationCode,
   clearVerification,
+  deleteUser,
+  updateUser,
 } = UserSlice.actions;
 
 export default UserSlice.reducer;

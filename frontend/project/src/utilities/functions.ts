@@ -3,6 +3,7 @@ import { store } from "../Redux/store/store";
 import { setLogOut } from "../Redux/slices/User/UserSlice.js";
 
 const API_URL = "https://backend-new-project-i1g5.onrender.com/api";
+//const API_URL = "http://localhost:5000/api";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -124,7 +125,7 @@ export const startTokenTimer = (token: string) => {
       setTimeout(() => {
         store.dispatch(setLogOut());
         window.location.assign("/");
-      }, 1500);
+      }, 300000);
     }, expireTime);
   }
 };
