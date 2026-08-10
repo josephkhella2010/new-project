@@ -22,6 +22,16 @@ jobs:
       # =========================
       # Backend
       # =========================
+
+      # =========================
+      # Create Backend .env
+      # =========================
+      - name: Create backend .env
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
+          echo "PORT=${{ secrets.PORT }}" >> backend/.env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
       - name: Install Backend Dependencies
         working-directory: backend
         run: npm ci
@@ -55,12 +65,17 @@ jobs:
 
       - name: Check Running Containers
         run: docker ps
-        
       - name: Wait for Backend
-        run: sleep 5
+        run: sleep 10
+
+      - name: Check Docker Containers
+        run: docker compose ps
+
+      - name: Show Backend Logs
+        run: docker compose logs backend
 
       - name: Check Backend Health
-        run: curl http://localhost:5000/
+        run: curl --fail http://localhost:5000/ || exit 1
 
       - name: Stop Docker Containers
         if: always()
