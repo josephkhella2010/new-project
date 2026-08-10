@@ -134,11 +134,12 @@ export const startTokenTimer = (token: string) => {
   }
 };
  */
+
 import { toast } from "react-toastify";
 import { store } from "../Redux/store/store";
 import { setLogOut } from "../Redux/slices/User/UserSlice.js";
 
-const API_URL = "https://mini-ai-backend-ds3j.onrender.com";
+const API_URL = "https://mini-ai-backend-ds3j.onrender.com/api";
 //const API_URL = "http://localhost:5000/api";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
