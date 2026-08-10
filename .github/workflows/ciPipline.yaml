@@ -31,7 +31,7 @@ jobs:
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> backend/.env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
           echo "PORT=${{ secrets.PORT }}" >> backend/.env
-          echo "PORT=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
       - name: Install Backend Dependencies
         working-directory: backend
         run: npm ci
@@ -76,7 +76,6 @@ jobs:
 
       - name: Check Backend Health
         run: curl --fail http://localhost:5000/ || exit 1
-
 
       - name: Stop Docker Containers
         if: always()
