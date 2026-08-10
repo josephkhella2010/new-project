@@ -1,9 +1,9 @@
-import { toast } from "react-toastify";
+/* import { toast } from "react-toastify";
 import { store } from "../Redux/store/store";
 import { setLogOut } from "../Redux/slices/User/UserSlice.js";
 
-const API_URL = "https://backend-new-project-i1g5.onrender.com/api";
-//const API_URL = "http://localhost:5000/api";
+//const API_URL = "https://backend-new-project-i1g5.onrender.com/api";
+const API_URL = "http://localhost:5000/api";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -19,11 +19,7 @@ interface ApiErrorResponse {
   error?: string | string[];
 }
 
-/* const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-};
- */
+
 const apiRequest = async <T>({
   endpoint,
   method = "GET",
@@ -43,8 +39,8 @@ const apiRequest = async <T>({
     });
 
     const result = await response.json();
-    console.log("STATUS:", response.status);
-    console.log("RESULT:", result);
+    //console.log("STATUS:", response.status);
+    //console.log("RESULT:", result);
 
     // JWT expired
     if (response.status === 401) {
@@ -67,8 +63,9 @@ const apiRequest = async <T>({
       } else if (Array.isArray(errorData.error)) {
         errorMessage = errorData.error.join(", ");
       }
-
-      toast.error(errorMessage);
+      if (method !== "GET") {
+        toast.error(errorMessage);
+      }
 
       throw new Error(errorMessage);
     }
@@ -76,7 +73,11 @@ const apiRequest = async <T>({
     // Success toast (if backend returns message)
     const successMessage = (result as ApiErrorResponse).message;
 
-    if (Array.isArray(successMessage) && successMessage.length > 0) {
+    if (
+      Array.isArray(successMessage) &&
+      successMessage.length > 0 &&
+      method !== "GET"
+    ) {
       toast.success(successMessage[0]);
     }
 
@@ -122,10 +123,186 @@ export const startTokenTimer = (token: string) => {
         "Session time is over. You are logged out. Please login again.",
       );
 
+      setTimeout(
+        () => {
+          store.dispatch(setLogOut());
+          window.location.assign("/");
+        },
+        60 * 60 * 1000,
+      );
+    }, expireTime);
+  }
+};
+ */
+import { toast } from "react-toastify";
+import { store } from "../Redux/store/store";
+import { setLogOut } from "../Redux/slices/User/UserSlice.js";
+
+//const API_URL = "https://backend-new-project-i1g5.onrender.com/api";
+const API_URL = "http://localhost:5000/api";
+
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+interface ApiOptions {
+  endpoint: string;
+  method?: HttpMethod;
+  data?: unknown;
+  token?: string;
+}
+
+interface ApiErrorResponse {
+  message?: string[];
+  error?: string | string[];
+}
+
+const apiRequest = async <T>({
+  endpoint,
+  method = "GET",
+  data,
+  token,
+}: ApiOptions): Promise<T> => {
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+
+        ...(token && {
+          Authorization: `Bearer ${token}`,
+        }),
+      },
+
+      body: method !== "GET" && data ? JSON.stringify(data) : undefined,
+    });
+
+    const result = await response.json();
+
+    // JWT expired
+    if (response.status === 401) {
+      toast.error("Session expired. Please login again.");
+
+      store.dispatch(setLogOut());
+
+      // Redirect immediately
+      window.location.replace("/");
+
+      throw new Error("Session expired. Please login again.");
+    }
+
+    // Other API errors
+    if (!response.ok) {
+      const errorData = result as ApiErrorResponse;
+
+      let errorMessage = "Something went wrong";
+
+      if (Array.isArray(errorData.message)) {
+        errorMessage = errorData.message.join(", ");
+      } else if (typeof errorData.error === "string") {
+        errorMessage = errorData.error;
+      } else if (Array.isArray(errorData.error)) {
+        errorMessage = errorData.error.join(", ");
+      }
+
+      if (method !== "GET") {
+        toast.error(errorMessage);
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    // Success toast
+    const successMessage = (result as ApiErrorResponse).message;
+
+    if (
+      Array.isArray(successMessage) &&
+      successMessage.length > 0 &&
+      method !== "GET"
+    ) {
+      toast.success(successMessage[0]);
+    }
+
+    return result as T;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("API ERROR:", error.message);
+
+      throw error;
+    }
+
+    throw new Error("Something went wrong", {
+      cause: error,
+    });
+  }
+};
+
+export default apiRequest;
+
+// ==========================================
+// function for timer
+// ==========================================
+let logoutTimer: ReturnType<typeof setTimeout>;
+
+export const startTokenTimer = (token: string) => {
+  console.log("startTokenTimer called");
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    console.log("JWT PAYLOAD:", payload);
+
+    const expireTime = payload.exp * 1000 - Date.now();
+
+    console.log("Expire in ms:", expireTime);
+
+    // Clear old timer
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
+
+    // Token is already expired
+    if (expireTime <= 0) {
+      console.log("TOKEN ALREADY EXPIRED");
+
+      toast.error("Session expired. You will be logged out in 30 seconds.");
+
+      // IMPORTANT:
+      // Do NOT dispatch logout here yet
       setTimeout(() => {
         store.dispatch(setLogOut());
-        window.location.assign("/");
-      }, 300000);
-    }, expireTime);
+        window.location.replace("/");
+      }, 5000);
+
+      return;
+    }
+
+    if (expireTime > 0) {
+      logoutTimer = setTimeout(() => {
+        console.log("TOKEN EXPIRED");
+
+        toast.error(
+          "Session time is over. You will be logged out in 30 seconds.",
+        );
+
+        // IMPORTANT:
+        // Wait 30 seconds BEFORE logout
+        setTimeout(() => {
+          console.log("LOGGING OUT NOW");
+
+          store.dispatch(setLogOut());
+          window.location.replace("/");
+        }, 5000);
+      }, expireTime);
+    }
+  } catch (error) {
+    console.error("TOKEN TIMER ERROR:", error);
+
+    toast.error("Session expired. You will be logged out .");
+
+    // IMPORTANT:
+    // Logout only after 30 seconds
+    setTimeout(() => {
+      store.dispatch(setLogOut());
+      window.location.replace("/");
+    }, 5000);
   }
 };
