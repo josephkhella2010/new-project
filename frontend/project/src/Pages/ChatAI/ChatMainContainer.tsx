@@ -399,7 +399,7 @@ const useStyles = createUseStyles({
 
     "@media (max-width: 700px)": {
       gridTemplateColumns: "100px minmax(0, 1fr)",
-      padding: "70px 20px",
+      padding: "75px 20px",
     },
   },
 
