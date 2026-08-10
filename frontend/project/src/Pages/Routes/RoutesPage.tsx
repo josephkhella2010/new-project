@@ -7,6 +7,7 @@ import LoginPage from "../Login/LoginPage";
 import VerificationPage from "../VerificationPage/VerificationPage";
 import UpdateUser from "../UpdateUser/UpdateUser";
 import ProfileUser from "../Profile/ProfileUser";
+import ChatMainContainer from "../ChatAI/ChatMainContainer";
 
 const useStyles = createUseStyles({
   mainWrapper: {
@@ -28,6 +29,7 @@ export default function RoutesPage() {
             <Route path="/verification-code" element={<VerificationPage />} />
             <Route path="/update-user" element={<UpdateUser />} />
             <Route path="/Profile/:userId" element={<ProfileUser />} />
+            <Route path="/chats" element={<ChatMainContainer />} />
           </Routes>
         </div>
       </Router>

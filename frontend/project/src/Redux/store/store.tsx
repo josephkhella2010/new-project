@@ -5,6 +5,7 @@ import UserSliceReducer from "../slices/User/UserSlice";
 import LoadAndErrorSliceReducer from "../slices/loadAndErrorSlice/loadAndErrorSlice";
 import ShowEmailSectionReducer from "../slices/Common/showEmailSection";
 import ShowPasswordSectionReducer from "../slices/Common/ShowChangePassword";
+import ChatSliceReducer from "../slices/chatSlice/ChatSlice.js"
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     loadingSlice: LoadAndErrorSliceReducer,
     ShowEmailSectionSlice: ShowEmailSectionReducer,
     ShowPasswordSectionSlice: ShowPasswordSectionReducer,
+    chatsSlice:ChatSliceReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

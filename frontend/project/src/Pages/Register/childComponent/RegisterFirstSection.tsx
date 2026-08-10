@@ -1,4 +1,4 @@
-import { createUseStyles } from "react-jss";
+/* import { createUseStyles } from "react-jss";
 import { registerInputs } from "../../../utilities/Arrays";
 import type { RegisterInputsValType } from "../../../utilities/Interfaces";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
@@ -125,7 +125,7 @@ export default function RegisterFirstSection({
   const classes = useStyles();
   const dispatch = useDispatch();
   const { isSuccess } = useSelector((state: RootState) => state.loadingSlice);
-  /* function */
+  //////// function /////////////////////////////
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -155,7 +155,7 @@ export default function RegisterFirstSection({
     }
   }, [isSuccess, setRegisterValue]);
 
-  /*  */
+  
   return (
     <div className={classes.formContainer}>
       <h1>Register Page</h1>
@@ -191,6 +191,284 @@ export default function RegisterFirstSection({
           </div>
         </form>
         <p
+          onClick={() => {
+            dispatch(setShowEmailSection());
+          }}
+        >
+          Did you forget password?
+        </p>
+      </div>
+    </div>
+  );
+}
+ */
+
+import { createUseStyles } from "react-jss";
+import { registerInputs } from "../../../utilities/Arrays";
+import type { RegisterInputsValType } from "../../../utilities/Interfaces";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../Redux/store/store";
+import { setShowEmailSection } from "../../../Redux/slices/Common/showEmailSection";
+
+const useStyles = createUseStyles({
+  learningSection: {
+    display: "flex",
+    alignItems: "center",
+    gap: 50,
+    marginTop: 90,
+    marginBottom: 90,
+
+    "@media (max-width:900px)": {
+      flexDirection: "column-reverse",
+    },
+
+    "& img": {
+      width: "100%",
+      maxWidth: 500,
+      borderRadius: 18,
+      boxShadow: "0 15px 35px rgba(0, 0, 0, .08)",
+      height: "500px",
+
+      "@media (max-width:750px)": {
+        width: "100%",
+        maxWidth: "100%",
+      },
+    },
+  },
+
+  formContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "40px",
+    alignItems: "center",
+    padding: "30px",
+
+    "@media (max-width: 700px)": {
+      padding: "15px",
+    },
+  },
+
+  formMainSection: {
+    background:
+      "linear-gradient(135deg, #43536c 0%, #33527c 45%, #283b68 100%)",
+    padding: "30px",
+    borderRadius: "20px",
+    width: "50%",
+    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.36)",
+
+    "@media (max-width: 800px)": {
+      width: "90%",
+    },
+
+    "@media (max-width: 500px)": {
+      width: "95%",
+      padding: "20px",
+    },
+  },
+
+  formTitle: {
+    color: "white",
+    textAlign: "center",
+    marginBottom: "30px",
+    fontSize: "30px",
+
+    "@media (max-width: 700px)": {
+      fontSize: "24px",
+    },
+  },
+
+  formSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+
+  formLabel: {
+    display: "flex",
+    gap: "30px",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    "& p": {
+      margin: "0px",
+      fontSize: "15px",
+      color: "white",
+      fontWeight: 500,
+
+      "@media (max-width: 700px)": {
+        fontSize: "10px",
+      },
+    },
+
+    "@media (max-width: 500px)": {
+      gap: "10px",
+    },
+  },
+
+  inputContainer: {
+    width: "70%",
+
+    "@media (max-width: 700px)": {
+      width: "60%",
+    },
+
+    "& input": {
+      margin: "0px",
+      width: "100%",
+      height: "30px",
+      borderRadius: "5px",
+      border: "0.5px solid black",
+      outline: "none",
+      padding: "5px",
+      boxSizing: "border-box",
+
+      "&:focus": {
+        border: "2px solid #06B6D4",
+      },
+    },
+  },
+
+  btnContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "10px",
+
+    "& button": {
+      background:
+        "linear-gradient(135deg, #43536c 0%, #33527c 45%, #283b68 100%)",
+      margin: "0px",
+      width: "50%",
+      height: "50px",
+      borderRadius: "10px",
+      outline: "none",
+      padding: "5px",
+      color: "white",
+      cursor: "pointer",
+      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.36)",
+      fontSize: "16px",
+      fontWeight: 600,
+      transition: "all 0.2s ease",
+      border: "1px solid #807f7f",
+
+      "&:hover": {
+        border: "1px solid white",
+        transform: "translateY(-2px)",
+      },
+
+      "&:active": {
+        transform: "translateY(0)",
+      },
+
+      "@media (max-width: 500px)": {
+        width: "70%",
+      },
+    },
+  },
+
+  forgotPassword: {
+    color: "white",
+    textAlign: "center",
+    marginTop: "25px",
+    cursor: "pointer",
+    fontSize: "14px",
+    transition: "all 0.2s ease",
+
+    "&:hover": {
+      color: "#06B6D4",
+      textDecoration: "underline",
+    },
+  },
+});
+
+interface PropsType {
+  registerValue: RegisterInputsValType;
+  setRegisterValue: Dispatch<SetStateAction<RegisterInputsValType>>;
+}
+
+export default function RegisterFirstSection({
+  registerValue,
+  setRegisterValue,
+}: PropsType) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const { isSuccess } = useSelector((state: RootState) => state.loadingSlice);
+
+  /* function */
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    val: string,
+  ) => {
+    const { value } = e.target;
+
+    setRegisterValue((prev) => ({ ...prev, [val]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(" registerValue", registerValue);
+
+    dispatch({
+      type: "REGISTER_USERS_REQUEST",
+      payload: registerValue,
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setRegisterValue({
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        dateOfBirth: "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
+  }, [isSuccess, setRegisterValue]);
+
+  /*  */
+
+  return (
+    <div className={classes.formContainer}>
+      <div className={classes.formMainSection}>
+        <h2 className={classes.formTitle}>Register Page</h2>
+
+        <form className={classes.formSection} onSubmit={handleSubmit}>
+          {registerInputs &&
+            registerInputs.map((inp, index) => {
+              return (
+                <div className={classes.formLabel} key={index}>
+                  <p>{inp.label}</p>
+
+                  <div className={classes.inputContainer}>
+                    <input
+                      type={inp.type}
+                      name={inp.placeholder}
+                      id={inp.name}
+                      value={
+                        registerValue[inp.name as keyof RegisterInputsValType]
+                      }
+                      onChange={(e) => {
+                        handleOnChange(e, inp.name);
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+
+          <div className={classes.btnContainer}>
+            <button type="submit">register</button>
+          </div>
+        </form>
+
+        <p
+          className={classes.forgotPassword}
           onClick={() => {
             dispatch(setShowEmailSection());
           }}

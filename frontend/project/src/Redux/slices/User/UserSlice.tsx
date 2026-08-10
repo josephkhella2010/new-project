@@ -42,6 +42,7 @@ const UserSlice = createSlice({
       localStorage.removeItem("token");
       state.user = null;
       state.token = "";
+      window.location.assign("/");
     },
     setVerificationCode: (
       state,

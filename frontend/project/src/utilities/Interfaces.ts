@@ -52,3 +52,29 @@ export interface UpdateInputsType {
   dateOfBirth: string;
   password: string;
 }
+
+export interface MessageType {
+  _id: string;
+  question: string;
+  answer: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ChatType {
+  _id: string;
+  messages: MessageType[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ChatAIType {
+  _id: string;
+  userId: string;
+  chats: ChatType[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+export interface QuestionInputType {
+  question: string;
+}
