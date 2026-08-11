@@ -8,6 +8,9 @@ import VerificationPage from "../VerificationPage/VerificationPage";
 import UpdateUser from "../UpdateUser/UpdateUser";
 import ProfileUser from "../Profile/ProfileUser";
 import ChatMainContainer from "../ChatAI/ChatMainContainer";
+import LoadingContainer from "../../utilities/Common/LoadingContainer";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../Redux/store/store";
 
 const useStyles = createUseStyles({
   mainWrapper: {
@@ -17,10 +20,14 @@ const useStyles = createUseStyles({
 
 export default function RoutesPage() {
   const classes = useStyles();
+  const { isLoading } = useSelector((state: RootState) => state.loadingSlice);
+
   return (
     <div>
       <Router>
         <NavigationContainer />
+        {isLoading && <LoadingContainer />}
+
         <div className={classes.mainWrapper}>
           <Routes>
             <Route path="/" element={<HomePage />} />
